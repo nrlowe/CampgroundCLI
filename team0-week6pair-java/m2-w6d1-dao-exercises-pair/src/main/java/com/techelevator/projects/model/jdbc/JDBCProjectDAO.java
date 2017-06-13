@@ -36,12 +36,14 @@ public class JDBCProjectDAO implements ProjectDAO {
 
 	@Override
 	public void removeEmployeeFromProject(Long projectId, Long employeeId) {
-		
+		String sqlRemoveEmployeeFromProject = "DELETE FROM project_employee " + "WHERE project_id = ? AND employee_id = ? ";
+		jdbcTemplate.update(sqlRemoveEmployeeFromProject, projectId, employeeId);
 	}
 
 	@Override
 	public void addEmployeeToProject(Long projectId, Long employeeId) {
-		
+		String sqlAddEmployeeToProject = "INSERT INTO project_employee(project_id, employee_id) " + "VALUES (?, ?) ";
+		jdbcTemplate.update(sqlAddEmployeeToProject, projectId, employeeId);
 	}
 	
 	private Project mapRowToProject(SqlRowSet results) {
@@ -55,8 +57,6 @@ public class JDBCProjectDAO implements ProjectDAO {
 		if(results.getDate("to_date") != null){
 		theProject.setEndDate(results.getDate("to_date").toLocalDate());
 		}
-		
-		
 		return theProject;
 		
 	}
