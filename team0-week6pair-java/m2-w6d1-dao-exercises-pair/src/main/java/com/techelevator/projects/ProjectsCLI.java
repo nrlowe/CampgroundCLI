@@ -60,7 +60,7 @@ public class ProjectsCLI {
 																	 PROJ_MENU_OPTION_ASSIGN_EMPLOYEE_TO_PROJECT,
 																	 PROJ_MENU_OPTION_REMOVE_EMPLOYEE_FROM_PROJECT,
 																	 MENU_OPTION_RETURN_TO_MAIN };
-	
+	 
 	private Menu menu;
 	private DepartmentDAO departmentDAO;
 	private EmployeeDAO employeeDAO;

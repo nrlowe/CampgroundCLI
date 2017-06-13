@@ -32,7 +32,7 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 		return allDepartments;
 		
 	}
-
+ 
 	@Override
 	public List<Department> searchDepartmentsByName(String nameSearch) {
 		List<Department> departmentList = new ArrayList<Department>();
@@ -49,8 +49,6 @@ public class JDBCDepartmentDAO implements DepartmentDAO {
 	public void updateDepartmentName(Long departmentId, String departmentName) {
 		String sqlUpdateDepartmentName = "UPDATE department " + "SET name = ? " + "WHERE department_id = ?";
 		jdbcTemplate.update(sqlUpdateDepartmentName, departmentName, departmentId);
-
-		
 	}
 
 	@Override
