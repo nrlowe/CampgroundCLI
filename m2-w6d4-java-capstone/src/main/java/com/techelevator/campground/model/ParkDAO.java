@@ -6,6 +6,8 @@ public interface ParkDAO {
 
 	public List<Park> getAllParksByName();
 	
-	public List<Park> getAllParkInfo();
+	public List<Park> getAllParkInfo(Long id);
+
+	
 	
 }

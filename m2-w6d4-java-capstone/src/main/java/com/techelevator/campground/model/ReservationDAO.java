@@ -1,10 +1,11 @@
 package com.techelevator.campground.model;
 
-import java.util.List;
+import java.time.LocalDate;
+
 
 public interface ReservationDAO {
-	public List<Reservation> getAllReservations();
-	public List<Reservation> searchReservationsByName();
+	public void createNewReservation(Long siteId, String name, LocalDate fromDate, LocalDate toDate);
+	public Reservation confirmReservation(String name);
 	
 
 }

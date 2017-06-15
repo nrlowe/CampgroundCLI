@@ -6,10 +6,10 @@ public class Campground {
 
 	private Long campgroundId;
 	private Long parkId;
-	private String parkName;
+	private String campgroundName;
 	private LocalDate openFrom;
 	private LocalDate openTo;
-	private DollarAmount dailyFee;
+	private String dailyFee;
 
 	public Long getCampgroundId() {
 		return campgroundId;
@@ -27,12 +27,12 @@ public class Campground {
 		this.parkId = parkId;
 	}
 
-	public String getParkName() {
-		return parkName;
+	public String getCampground() {
+		return campgroundName;
 	}
 
-	public void setParkName(String parkName) {
-		this.parkName = parkName;
+	public void setCampgroundName(String campgroundName) {
+		this.campgroundName = campgroundName;
 	}
 
 	public LocalDate getOpenFrom() {
@@ -51,11 +51,11 @@ public class Campground {
 		this.openTo = openTo;
 	}
 
-	public DollarAmount getDailyFee() {
+	public String getDailyFee() {
 		return dailyFee;
 	}
 
-	public void setDollarAmount(DollarAmount dailyFee) {
+	public void setDailyFee(String dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 }

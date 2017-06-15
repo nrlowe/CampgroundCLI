@@ -50,12 +50,12 @@ public class Reservation {
 		this.toDate = toDate;
 	}
 	
-	public LocalDate getParkCreatedDate() {
+	public LocalDate getReservationCreatedDate() {
 		return reservationCreatedDate;
 	}
 	
-	public void setParkCreatedDate(LocalDate parkCreatedDate) {
-		this.reservationCreatedDate = parkCreatedDate;
+	public void setReservationCreatedDate(LocalDate reservationCreatedDate) {
+		this.reservationCreatedDate = reservationCreatedDate;;
 	}
 	
 }

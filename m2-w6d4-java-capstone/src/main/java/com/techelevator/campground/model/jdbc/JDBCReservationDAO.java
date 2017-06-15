@@ -1,32 +1,58 @@
 package com.techelevator.campground.model.jdbc;
 
-import java.util.List;
+import java.time.LocalDate;
+
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import com.techelevator.campground.model.Reservation;
 import com.techelevator.campground.model.ReservationDAO;
 
 public class JDBCReservationDAO implements ReservationDAO {
-	
 	private JdbcTemplate jdbcTemplate;
-
 	public JDBCReservationDAO(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Override
-	public List<Reservation> getAllReservations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+  
+
 
 	@Override
-	public List<Reservation> searchReservationsByName() {
-		// TODO Auto-generated method stub
-		return null;
+	public void createNewReservation(Long siteId, String name, LocalDate fromDate, LocalDate toDate) {
+		LocalDate create = LocalDate.now();
+		String sqlReservationCreation = "INSERT INTO reservation(site_id, name, from_date, to_date, create_date) VALUES(?, ?, ?, ?, ?, ? )";
+		jdbcTemplate.update(sqlReservationCreation, siteId, name, fromDate, toDate, create);
+		
 	}
-
+		
+		 
+	
+	@Override
+	public Reservation confirmReservation(String name) {
+		Reservation reservationId = new Reservation();
+		String sqlReturnReservationName = "SELECT reservation_id, site_id, name, from_date, to_date, create_id " + "FROM reservation " + "WHERE name = ? ";
+		SqlRowSet result = jdbcTemplate.queryForRowSet(sqlReturnReservationName, name);
+		while(result.next()) {
+			reservationId = mapToReservationRow(result);
+		}
+		return reservationId;
+	}
+	
+	private Reservation mapToReservationRow(SqlRowSet result) {
+		Reservation newReservation;
+		newReservation = new Reservation();
+		newReservation.setReservationId(result.getLong("reservation_id"));
+		newReservation.setSiteId(result.getLong("site_id"));
+		newReservation.setName(result.getString("name"));
+		newReservation.setFromDate(result.getDate("from_date").toLocalDate());
+		newReservation.setToDate(result.getDate("to_date").toLocalDate());
+		newReservation.setReservationCreatedDate(result.getDate("create_date").toLocalDate());
+		return newReservation;
+	}
 }
+
+	
