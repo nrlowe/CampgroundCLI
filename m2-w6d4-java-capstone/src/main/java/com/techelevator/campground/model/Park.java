@@ -16,7 +16,7 @@ public class Park {
 		return parkId;
 	}
 
-	public void setParkId() {
+	public void setParkId(Long parkId) {
 		this.parkId = parkId;
 	}
 
@@ -24,7 +24,7 @@ public class Park {
 		return parkName;
 	}
 
-	public void setParkName() {
+	public void setParkName(String parkName) {
 		this.parkName = parkName;
 	}
 
@@ -32,7 +32,7 @@ public class Park {
 		return location;
 	}
 
-	public void setLocation() {
+	public void setLocation(String location) {
 		this.location = location;
 	}
 
@@ -40,7 +40,7 @@ public class Park {
 		return establishDate;
 	}
 
-	public void setEstablishDate() {
+	public void setEstablishDate(LocalDate establishDate) {
 		this.establishDate = establishDate;
 	}
 
@@ -48,7 +48,7 @@ public class Park {
 		return area;
 	}
 
-	public void setArea() {
+	public void setArea(Long area) {
 		this.area = area;
 	}
 
@@ -56,7 +56,7 @@ public class Park {
 		return visitors;
 	}
 
-	public void setVisitors() {
+	public void setVisitors(Long visitors) {
 		this.visitors = visitors;
 	}
 
@@ -64,7 +64,7 @@ public class Park {
 		return description;
 	}
 
-	public void setDescription() {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 

@@ -15,7 +15,7 @@ public class Campground {
 		return campgroundId;
 	}
 
-	public void setCampgroundId() {
+	public void setCampgroundId(Long campgroundId) {
 		this.campgroundId = campgroundId;
 	}
 
@@ -23,7 +23,7 @@ public class Campground {
 		return parkId;
 	}
 
-	public void setParkId() {
+	public void setParkId(Long parkId) {
 		this.parkId = parkId;
 	}
 
@@ -31,7 +31,7 @@ public class Campground {
 		return parkName;
 	}
 
-	public void setParkName() {
+	public void setParkName(String parkName) {
 		this.parkName = parkName;
 	}
 
@@ -39,7 +39,7 @@ public class Campground {
 		return openFrom;
 	}
 
-	public void setOpenFrom() {
+	public void setOpenFrom(LocalDate openFrom) {
 		this.openFrom = openFrom;
 	}
 
@@ -47,7 +47,7 @@ public class Campground {
 		return openTo;
 	}
 
-	public void setOpenTo() {
+	public void setOpenTo(LocalDate openTo) {
 		this.openTo = openTo;
 	}
 
@@ -55,7 +55,7 @@ public class Campground {
 		return dailyFee;
 	}
 
-	public void setDollarAmount() {
+	public void setDollarAmount(DollarAmount dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 }
