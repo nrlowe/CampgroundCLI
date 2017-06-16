@@ -4,9 +4,11 @@ import java.util.List;
 
 public interface ParkDAO {
 
+	public List<String> getAllParkNames();
+	
 	public List<Park> getAllParksByName();
 	
-	public List<Park> getAllParkInfo(Long id);
+	public Park getAllParkInfo(String name);
 
 	
 	
