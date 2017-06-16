@@ -1,6 +1,6 @@
 package com.techelevator.campground.model;
 
-public class Site {
+public class Site extends Campground {
 	private Long siteId;
 	private Long campgroundId;
 	private Long siteNumber;

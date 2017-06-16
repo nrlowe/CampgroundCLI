@@ -54,6 +54,7 @@ public class JDBCSiteDAO implements SiteDAO {
 		theSite.setAccessible(results.getBoolean("accessible"));
 		theSite.setMaxRVLength(results.getLong("max_rv_length"));
 		theSite.setUtilities(results.getBoolean("utilities"));
+		theSite.setDailyFee(results.getString("daily_fee"));
 		return theSite;
 	}
 

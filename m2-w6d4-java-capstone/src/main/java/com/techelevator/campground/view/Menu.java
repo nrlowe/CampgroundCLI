@@ -16,7 +16,16 @@ public class Menu {
 		this.out = new PrintWriter(output);
 		this.in = new Scanner(input);
 	}
-
+	
+	public String getChoiceFromOptions(String options) {
+		String choice = null;
+		while(choice == null) {
+			displayMenuOptions(options);
+			choice = in.nextLine();
+		}
+		return choice;
+	}
+	
 	public Object getChoiceFromOptions(Object[] options) {
 		Object choice = null;
 		while(choice == null) {
@@ -25,7 +34,6 @@ public class Menu {
 		}
 		return choice;
 	}
-	
 	
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
@@ -44,6 +52,12 @@ public class Menu {
 		return choice;
 	}
 
+	private void displayMenuOptions(String options) {
+		out.println();
+		out.print(options);
+		out.flush();
+	}
+	
 	private void displayMenuOptions(Object[] options) {
 		out.println();
 		for(int i = 0; i < options.length; i++) {
@@ -53,22 +67,4 @@ public class Menu {
 		out.print("\nPlease choose an option >>> ");
 		out.flush();
 	}
-	
-//	public void displayAvailableSites(Object[] options) {
-//		out.println();
-//		Campground[] campgroundForParkOne;
-//		for(int i = 0; i < 4; i++) {
-//			parkId = i
-//			if(campgroundId is in parkId)
-//				add to array
-//				
-//			}
-//			int optionNum = i+1;
-//			out.println(optionNum+") "+options[i]);
-//		}
-//		out.print("\nPlease choose an option >>> ");
-//		out.flush();
-//	}
-	
-
 }
