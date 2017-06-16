@@ -117,6 +117,7 @@ public class ProjectsCLI {
 		} 
 	}
 
+	
 	private void handleAddDepartment() {
 		printHeading("Add New Department");
 		String newDepartmentName = getUserInput("Enter new Department name");

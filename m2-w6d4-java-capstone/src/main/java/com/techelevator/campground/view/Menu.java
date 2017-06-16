@@ -5,6 +5,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
+
+
 public class Menu {
 	
 	private PrintWriter out;
@@ -23,7 +25,8 @@ public class Menu {
 		}
 		return choice;
 	}
-
+	
+	
 	private Object getChoiceFromUserInput(Object[] options) {
 		Object choice = null;
 		String userInput = in.nextLine();
@@ -50,5 +53,22 @@ public class Menu {
 		out.print("\nPlease choose an option >>> ");
 		out.flush();
 	}
+	
+//	public void displayAvailableSites(Object[] options) {
+//		out.println();
+//		Campground[] campgroundForParkOne;
+//		for(int i = 0; i < 4; i++) {
+//			parkId = i
+//			if(campgroundId is in parkId)
+//				add to array
+//				
+//			}
+//			int optionNum = i+1;
+//			out.println(optionNum+") "+options[i]);
+//		}
+//		out.print("\nPlease choose an option >>> ");
+//		out.flush();
+//	}
+	
 
 }

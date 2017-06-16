@@ -93,23 +93,66 @@ public class CampgroundCLI {
 		printHeading("Select Command");
 		String choice = (String)menu.getChoiceFromOptions(PARK_INFO_MENU);
 		if(choice.equals(PARK_INFO_VIEW_CAMPGROUNDS)) {
-			handleViewCampgrounds(parkName);
+			handleViewCampgrounds(selectedPark.getParkName());
 		} else if (choice.equals(PARK_INFO_SEARCH_FOR_RESERVATION)){
-			handleSearchForReservation();
+			handleSearchForReservation(selectedPark.getParkName());
 		}
 	}
 	
 	
 	private void handleViewCampgrounds(String parkName) {
 		List<Campground> campgroundsInPark = campgroundDAO.getCampgroundsByParkName(parkName);
+		int i = 1;
+//		Campground[] campgroundMenu = campgroundsInPark.toArray(new Campground[0]);
+//		Campground choice = (Campground)menu.getChoiceFromOptions(campgroundMenu);
 		if(campgroundsInPark != null) {
 			System.out.println("Name			Open		Close		Daily Fee");
+//			
+			System.out.println();
+			for(Campground campground : campgroundsInPark) {
+				System.out.println("#" + i + " " + campground.getCampground() + " " + campground.getOpenFrom() + " " + campground.getOpenTo() + " $" + campground.getDailyFee() + "0");
+				i++;
+			}
+			String choiceTwo = (String)menu.getChoiceFromOptions(CAMPGROUND_INFO);
+			if(choiceTwo.equals(CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION)) {
+				handleSearchForReservation(parkName);
+			} else {
+				
+			}
+		
+				
 			
+			 
 		}
 		
 	}
-	
-	private void handleSearchForReservation() {
+
+
+	private void handleSearchForReservation(String parkName) {
+		// display campgrounds to choose from
+		List<Campground> campgroundsInPark = campgroundDAO.getCampgroundsByParkName(parkName);
+		if(campgroundsInPark != null) {
+			System.out.println("Campground ID      Name			Open		Close		Daily Fee");
+//			
+			System.out.println();
+			for(Campground campground : campgroundsInPark) {
+				System.out.println(campground.getCampgroundId() + " " + campground.getCampground() + " " + campground.getOpenFrom() + " " + campground.getOpenTo() + " $" + campground.getDailyFee() + "0");
+				Object choice = null;
+				out.print("Which campground (enter 0 to cancel)?");
+				Long id = in.nextLong();
+				in.nextLine();
+				out.print("What is the arrical date? yyyy-mm-dd:");
+				String arrivalDate = in.nextLine();
+				out.print("What is the departure date? yyyy-mm-dd:");
+				String departureDate = in.nextLine();
+			
+			}
+		}
+		
+		// allow the user to select one
+		// ask user for arrival date
+		// ask user from departure date
+		// run and match results based on user input, return the top 5
 		
 	}
 	
@@ -124,6 +167,37 @@ public class CampgroundCLI {
 	private String getUserInput(String prompt) {
 		System.out.print(prompt + " >>> ");
 		return new Scanner(System.in).nextLine();
+	}
+	
+	private String convertNumToMonth(String num) {
+			if(num == "01") {
+				return "January";
+			} else if (num == "02") {
+				return "Feburary";
+			} else if (num == "03") {
+				return "March";
+			} else if (num == "04") {
+				return "April";
+			} else if (num == "05") {
+				return "May";
+			} else if (num == "06") {
+				return "June";
+			} else if (num == "07") {
+				return "July";
+			} else if (num == "08") {
+				return "August";
+			} else if (num == "09") {
+				return "September";
+			} else if (num == "10") {
+				return "October";
+			} else if (num == "11") {
+				return "Novemeber";
+			} else if (num == "12") {
+				return "Decemeber";
+			} else {
+				return null;
+			}
+		
 	}
 	
 }

@@ -1,14 +1,14 @@
 package com.techelevator.campground.model;
 
-import java.time.LocalDate;
+
 
 public class Campground {
 
 	private Long campgroundId;
 	private Long parkId;
 	private String campgroundName;
-	private LocalDate openFrom;
-	private LocalDate openTo;
+	private String openFrom;
+	private String openTo;
 	private String dailyFee;
 
 	public Long getCampgroundId() {
@@ -35,19 +35,19 @@ public class Campground {
 		this.campgroundName = campgroundName;
 	}
 
-	public LocalDate getOpenFrom() {
+	public String getOpenFrom() {
 		return openFrom;
 	}
 
-	public void setOpenFrom(LocalDate openFrom) {
+	public void setOpenFrom(String openFrom) {
 		this.openFrom = openFrom;
 	}
 
-	public LocalDate getOpenTo() {
+	public String getOpenTo() {
 		return openTo;
 	}
 
-	public void setOpenTo(LocalDate openTo) {
+	public void setOpenTo(String openTo) {
 		this.openTo = openTo;
 	}
 
