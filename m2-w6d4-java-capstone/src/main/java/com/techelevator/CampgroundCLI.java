@@ -144,10 +144,7 @@ public class CampgroundCLI {
 			Long id = null;
 			id.valueOf(campgroundId).longValue();
 			
-			List<Campground> campgroundInfo = campgroundDAO.getCamproundInfo(id);
-			String dailyFee = campgroundInfo.get(0).getDailyFee();
-			Long fee = null;
-			fee.valueOf(dailyFee).longValue();
+			
 			
 			List<Site> availableSites = siteDAO.getCurrentReservationsBySite(id, fromDate, toDate);
 			if(availableSites != null) {
@@ -156,9 +153,20 @@ public class CampgroundCLI {
 			
 			System.out.println();
 			for(Site openSite : availableSites) {
+				String dailyCost = openSite.getDailyFee();
+				Long dailyFee = null;
+				dailyFee.valueOf(dailyCost).longValue();
+				
 				System.out.println(" " + openSite.getSiteId() + " " + openSite.getMaxOccupancy() + " " + openSite.getAccessible() + " " 
-									+ openSite.getMaxRVLength() + " " + openSite.getUtilities() + " $" + fee*getNumberOfDays(toDate, fromDate) + "0");
+									+ openSite.getMaxRVLength() + " " + openSite.getUtilities() + " $" + dailyFee * getNumberOfDays(toDate, fromDate) + "0");
 			}
+			String chosenSite = menu.getChoiceFromOptions("Which site should be reserved (Enter 0 to cancel)?");
+			String name = menu.getChoiceFromOptions("What name should the reservation be made under?");
+			Long siteId = null;
+			id.valueOf(chosenSite).longValue();
+			reservationDAO.createNewReservation(siteId, name, fromDate, toDate);
+			
+			System.out.println("The reservation has been made and the Confirmation ID is { " + reservationDAO.confirmReservation(name) + " }");
 			}
 		}
 	}
