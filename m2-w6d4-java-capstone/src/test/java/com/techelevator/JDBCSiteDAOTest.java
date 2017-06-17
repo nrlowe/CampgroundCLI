@@ -15,13 +15,14 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import com.techelevator.campground.model.Park;
-import com.techelevator.campground.model.jdbc.JDBCParkDAO;
+import com.techelevator.campground.model.Site;
+import com.techelevator.campground.model.jdbc.JDBCSiteDAO;
 
-public class JDBCParkDAOTest {
+public class JDBCSiteDAOTest {
 	private static SingleConnectionDataSource dataSource;
-	private JDBCParkDAO dao;
-	private LocalDate create = LocalDate.parse("1812-10-10");
+	private JDBCSiteDAO dao;
+	private LocalDate fromDate = LocalDate.parse("2017-06-09");
+	private LocalDate toDate = LocalDate.parse("2017-06-17");
 	
 	@BeforeClass
 	public static void setupDataSource() {
@@ -31,7 +32,6 @@ public class JDBCParkDAOTest {
 		dataSource.setPassword("postgres1");
 		dataSource.setAutoCommit(false);
 	}
-	
 	@AfterClass
 	public static void closeDataSource() throws SQLException {
 		dataSource.destroy();
@@ -39,10 +39,8 @@ public class JDBCParkDAOTest {
 	
 	@Before
 	public void setup() {
-		String sqlInsertPark = "INSERT INTO park (park_id, name, location, establish_date, area, visitors, description ) VALUES (?, ?, ?, ?, ?, ?, ? ) ";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sqlInsertPark, 4, "Empty Park", "Mars", create, 10, 4, "Some empty park on Mars made by the Great Viking Sir Joe.");
-		dao = new JDBCParkDAO(dataSource);
+		dao = new JDBCSiteDAO(dataSource);
 	}
 	
 	@After
@@ -50,24 +48,9 @@ public class JDBCParkDAOTest {
 		dataSource.getConnection().rollback();
 	}
 	
-	@Test
-	public void return_all_parks() {
-		List<Park> results = dao.getAllParksByName();
-		assertEquals(4, results.size());
-	}
-	
-	@Test
-	public void return_all_park_string() {
-		List<String> results = dao.getAllParkNames();
-		assertEquals(4, results.size());
-	}
-	
-	@Test
-	public void return_all_park_info() {
-		Park results = dao.getAllParkInfo("Empty Park");
-		List<Park> newResults = new ArrayList<Park>();
-		newResults.add(results);
-		assertEquals(1, newResults.size());
-	}
-
+	@Test 
+	public void return_current_reservations_by_site() {
+		List<Site> results = dao.getCurrentReservationsBySite(1L, fromDate, toDate);
+		assertEquals(2, results.size());
+ 	}
 }
