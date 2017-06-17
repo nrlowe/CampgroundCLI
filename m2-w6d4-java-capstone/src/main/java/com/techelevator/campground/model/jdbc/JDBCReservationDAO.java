@@ -1,7 +1,8 @@
 package com.techelevator.campground.model.jdbc;
 
 import java.time.LocalDate;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -17,27 +18,21 @@ public class JDBCReservationDAO implements ReservationDAO {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	
-  
-
-
 	@Override
 	public void createNewReservation(Long siteId, String name, LocalDate fromDate, LocalDate toDate) {
 		LocalDate create = LocalDate.now();
-		String sqlReservationCreation = "INSERT INTO reservation(site_id, name, from_date, to_date, create_date) VALUES(?, ?, ?, ?, ?, ? )";
+		String sqlReservationCreation = "INSERT INTO reservation(site_id, name, from_date, to_date, create_date) VALUES(?, ?, ?, ?, ?)";
 		jdbcTemplate.update(sqlReservationCreation, siteId, name, fromDate, toDate, create);
-		
 	}
-		
-		 
 	
 	@Override
-	public Reservation confirmReservation(String name) {
-		Reservation reservationId = new Reservation();
-		String sqlReturnReservationName = "SELECT reservation_id, site_id, name, from_date, to_date, create_id " + "FROM reservation " + "WHERE name = ? ";
+	public List<String> confirmReservation(String name) {
+		List<String> reservationId = new ArrayList<String>();
+		String sqlReturnReservationName = "SELECT reservation_id " + "FROM reservation " + "WHERE name = ? ";
 		SqlRowSet result = jdbcTemplate.queryForRowSet(sqlReturnReservationName, name);
 		while(result.next()) {
-			reservationId = mapToReservationRow(result);
+			reservationId.add(result.getString("reservation_id"));
+		
 		}
 		return reservationId;
 	}

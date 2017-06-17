@@ -9,7 +9,7 @@ public class Campground {
 	private String campgroundName;
 	private String openFrom;
 	private String openTo;
-	private String dailyFee;
+	private double dailyFee;
 
 	public Long getCampgroundId() {
 		return campgroundId;
@@ -51,11 +51,11 @@ public class Campground {
 		this.openTo = openTo;
 	}
 
-	public String getDailyFee() {
+	public double getDailyFee() {
 		return dailyFee;
 	}
 
-	public void setDailyFee(String dailyFee) {
+	public void setDailyFee(double dailyFee) {
 		this.dailyFee = dailyFee;
 	}
 }
