@@ -27,7 +27,7 @@ public class Campground {
 		this.parkId = parkId;
 	}
 
-	public String getCampground() {
+	public String getCampgroundName() {
 		return campgroundName;
 	}
 
