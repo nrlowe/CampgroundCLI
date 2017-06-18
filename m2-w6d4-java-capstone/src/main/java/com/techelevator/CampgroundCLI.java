@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-
 import com.techelevator.campground.model.Campground;
 import com.techelevator.campground.model.CampgroundDAO;
 import com.techelevator.campground.model.Park;
@@ -33,9 +32,9 @@ public class CampgroundCLI {
 	private static final String MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN = "Return to previous screen";
 
 	private static final String PARK_INFO_VIEW_CAMPGROUNDS = "View Campgrounds";
-	private static final String PARK_INFO_SEARCH_FOR_RESERVATION = "Search For Reservation";
-	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS,
-			PARK_INFO_SEARCH_FOR_RESERVATION, MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
+//	private static final String PARK_INFO_SEARCH_FOR_RESERVATION = "Search For Reservation";
+	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS };
+//			PARK_INFO_SEARCH_FOR_RESERVATION, MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
 
 	private static final String CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION = "Search for Available Reservation";
 	private static final String[] CAMPGROUND_INFO = new String[] { CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION,
@@ -84,7 +83,7 @@ public class CampgroundCLI {
 	private void handleParkSelection(String parkName) {
 		Park selectedPark = parkDAO.getAllParkInfo(parkName);
 		System.out.println();
-		if (selectedPark != null) {	
+		if (selectedPark != null) {
 			System.out.println(selectedPark.getParkName() + " National Park");
 			System.out.println(String.format("%-20s", "Location: ") + selectedPark.getLocation());
 			System.out.println(String.format("%-20s", "Established: ") + selectedPark.getEstablishDate());
@@ -105,8 +104,8 @@ public class CampgroundCLI {
 		String choice = (String) menu.getChoiceFromOptions(PARK_INFO_MENU);
 		if (choice.equals(PARK_INFO_VIEW_CAMPGROUNDS)) {
 			handleViewCampgrounds(selectedPark.getParkName());
-		} else if (choice.equals(PARK_INFO_SEARCH_FOR_RESERVATION)) {
-			handleSearchForReservation(selectedPark.getParkName());
+//		} else if (choice.equals(PARK_INFO_SEARCH_FOR_RESERVATION)) {
+//			handleSearchForReservation(selectedPark.getParkName());
 		}
 	}
 
@@ -115,9 +114,10 @@ public class CampgroundCLI {
 		if (campgroundsInPark != null) {
 			System.out.println();
 			System.out.println("CAMPGROUND LIST");
-			System.out.println(String.format("%-20s","Campground ID") + String.format("%-35s", "Name") + String.format("%-15s", "Open") +
-		                       String.format("%-17s", "Close") + "Daily Fee");
-			System.out.println("------------------------------------------------------------------------------------------------");
+			System.out.println(String.format("%-20s", "Campground ID") + String.format("%-35s", "Name")
+					+ String.format("%-15s", "Open") + String.format("%-17s", "Close") + "Daily Fee");
+			System.out.println(
+					"------------------------------------------------------------------------------------------------");
 			for (Campground campground : campgroundsInPark) {
 				Long campgroundId = campground.getCampgroundId();
 				String campgroundName = campground.getCampgroundName();
@@ -126,8 +126,9 @@ public class CampgroundCLI {
 				String formatOpenTo = campground.getOpenTo();
 				String openTo = convertNumToMonth(formatOpenTo);
 				double dailyFee = campground.getDailyFee();
-				System.out.println(String.format("%-5s", "") + String.format("%-15s", campgroundId) + String.format("%-35s", campgroundName) + 
-                                   String.format("%-15s", openFrom) + String.format("%-17s", openTo) + "$" + dailyFee + "0");
+				System.out.println(String.format("%-5s", "") + String.format("%-15s", campgroundId)
+						+ String.format("%-35s", campgroundName) + String.format("%-15s", openFrom)
+						+ String.format("%-17s", openTo) + "$" + dailyFee + "0");
 			}
 			String choiceTwo = (String) menu.getChoiceFromOptions(CAMPGROUND_INFO);
 			if (choiceTwo.equals(CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION)) {
@@ -139,68 +140,77 @@ public class CampgroundCLI {
 
 	private void handleSearchForReservation(String parkName) {
 
-			String campgroundId = menu.getChoiceFromOptions("Which campground (enter 0 to cancel)?");
-			Long id = Long.parseLong(campgroundId);
-			if(id == 0){
-				handleViewCampgrounds(parkName);
-			}
-			String arrivalDate = menu.getChoiceFromOptions("What is the arrival date? yyyy-mm-dd:");
-			LocalDate fromDate = convertStringToDate(arrivalDate);
-			String departureDate = menu.getChoiceFromOptions("What is the departure date? yyyy-mm-dd: ");
-			LocalDate toDate = convertStringToDate(departureDate);
-			// check that departure date is not before arrival date
-			validateDateRange(toDate, fromDate, parkName);
-			
-			List<Site> availableSites = siteDAO.getCurrentReservationsBySite(id, fromDate, toDate);
-			if (availableSites != null) {
-				System.out.println();
-				System.out.println("AVAILABLE CAMPSITES");
-				System.out.println(String.format("%-20s","Site No.") + String.format("%-20s", "Max Occup.") + String.format("%-20s", "Accessible") + 
-						           String.format("%-20s", "Max RV Length") + String.format("%-30s", "Utilities Available") + "Cost");
-				System.out.println("------------------------------------------------------------------------------------------------------------------");
-				for (Site openSite : availableSites) {
-					Long siteId = openSite.getSiteId();
-					Long maxOccupancy = openSite.getMaxOccupancy();
-					boolean accessible = openSite.getAccessible();
-					Long maxRVLength = openSite.getMaxRVLength();
-					boolean utilities = openSite.getUtilities();
-					System.out.println(String.format("%-5s", " ") + String.format("%-20s", siteId) + String.format("%-18s", maxOccupancy) + 
-							           String.format("%-22s", accessible) + String.format("%-23s", maxRVLength) + String.format("%-20s", utilities) + 
-							           "$" + openSite.getDailyFee() * getNumberOfDaysForCost(toDate, fromDate) + "0");
-				}
-				String chosenSite = menu.getChoiceFromOptions("Which site should be reserved (Enter 0 to cancel)?");
-				Long siteId = Long.parseLong(chosenSite);
-				String name = menu.getChoiceFromOptions("What name should the reservation be made under?");
-				reservationDAO.createNewReservation(siteId, name, fromDate, toDate);
-				System.out.println("The reservation has been made and the Confirmation ID is { "
-						+ reservationDAO.confirmReservation(name) + " }");
-			} else {
-				System.out.println("There are no available reservations.");
-			}
+		String campgroundId = menu.getChoiceFromOptions("Which campground (enter 0 to cancel)?");
+		Long id = Long.parseLong(campgroundId);
+		if (id == 0) {
+			handleViewCampgrounds(parkName);
 		}
-	
+		String arrivalDate = menu.getChoiceFromOptions("What is the arrival date? yyyy-mm-dd:");
+		LocalDate fromDate = convertStringToDate(arrivalDate);
+		String departureDate = menu.getChoiceFromOptions("What is the departure date? yyyy-mm-dd: ");
+		LocalDate toDate = convertStringToDate(departureDate);
+		validateDateRange(toDate, fromDate, parkName);
+		handleMakeReservation(id, fromDate, toDate);
+	}
+
+	private void handleMakeReservation(Long id, LocalDate fromDate, LocalDate toDate) {
+		List<Site> availableSites = siteDAO.getCurrentReservationsBySite(id, fromDate, toDate);
+		if (availableSites != null) {
+			System.out.println();
+			System.out.println("AVAILABLE CAMPSITES");
+			System.out.println(String.format("%-20s", "Site No.") + String.format("%-20s", "Max Occup.")
+					+ String.format("%-20s", "Accessible") + String.format("%-20s", "Max RV Length")
+					+ String.format("%-30s", "Utilities Available") + "Cost");
+			System.out.println(
+					"------------------------------------------------------------------------------------------------------------------");
+			for (Site openSite : availableSites) {
+				Long siteId = openSite.getSiteId();
+				Long maxOccupancy = openSite.getMaxOccupancy();
+				boolean accessible = openSite.getAccessible();
+				Long maxRVLength = openSite.getMaxRVLength();
+				boolean utilities = openSite.getUtilities();
+				System.out.println(String.format("%-5s", " ") + String.format("%-20s", siteId)
+						+ String.format("%-18s", maxOccupancy) + String.format("%-22s", accessible)
+						+ String.format("%-23s", maxRVLength) + String.format("%-20s", utilities) + "$"
+						+ openSite.getDailyFee() * getNumberOfDaysForCost(toDate, fromDate) + "0");
+			}
+			String chosenSite = menu.getChoiceFromOptions("Which site should be reserved (Enter 0 to cancel)?");
+			Long siteId = Long.parseLong(chosenSite);
+			if (siteId == 0) {
+				handleMakeReservation(id, fromDate, toDate);
+			}
+			String name = menu.getChoiceFromOptions("What name should the reservation be made under?");
+			reservationDAO.createNewReservation(siteId, name, fromDate, toDate);
+			System.out.println("The reservation has been made and the Confirmation ID is { "
+					+ reservationDAO.confirmReservation(name) + " }");
+			System.exit(0);
+		} else {
+			System.out.println("There are no available reservations.");
+		}
+	}
+
 	private int getNumberOfDaysForCost(LocalDate endDate, LocalDate startDate) {
 		int totalDays = endDate.compareTo(startDate);
 		return totalDays;
 	}
-	
+
 	private int validateDateRange(LocalDate endDate, LocalDate startDate, String parkName) {
 		int totalDays = endDate.compareTo(startDate);
-			if(totalDays < 0) {
-				System.out.println("Invalid dates entered!");
-				handleSearchForReservation(parkName);
-			} else if (totalDays == 0) {
-				System.out.println("Reservation must be for at least 1 night.");
-				handleSearchForReservation(parkName);
-			} else {
+		if (totalDays < 0) {
+			System.out.println("Departure date must be AFTER arrival date!");
+			handleSearchForReservation(parkName);
+		} else if (totalDays == 0) {
+			System.out.println("Reservation must be for at least 1 night.");
+			handleSearchForReservation(parkName);
+		} else {
 		}
 		return totalDays;
 	}
-	
+
 	private LocalDate convertStringToDate(String date) {
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate newDate = LocalDate.parse(date, formatter);
-			return newDate;
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate newDate = LocalDate.parse(date, formatter);
+		return newDate;
 	}
 
 	private void printHeading(String headingText) {
@@ -237,10 +247,9 @@ public class CampgroundCLI {
 		} else if (num.equals("12")) {
 			return "Decemeber";
 		} else {
-			
+
 		}
 		return null;
 	}
-	
-}
 
+}
