@@ -33,7 +33,8 @@ public class CampgroundCLI {
 
 	private static final String PARK_INFO_VIEW_CAMPGROUNDS = "View Campgrounds";
 //	private static final String PARK_INFO_SEARCH_FOR_RESERVATION = "Search For Reservation";
-	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS };
+	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS, 
+																  MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
 //			PARK_INFO_SEARCH_FOR_RESERVATION, MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
 
 	private static final String CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION = "Search for Available Reservation";
@@ -139,7 +140,26 @@ public class CampgroundCLI {
 	}
 
 	private void handleSearchForReservation(String parkName) {
-
+		List<Campground> campgroundsInPark = campgroundDAO.getCampgroundsByParkName(parkName);
+		if (campgroundsInPark != null) {
+			System.out.println();
+			System.out.println("CAMPGROUND LIST");
+			System.out.println(String.format("%-20s", "Campground ID") + String.format("%-35s", "Name")
+					+ String.format("%-15s", "Open") + String.format("%-17s", "Close") + "Daily Fee");
+			System.out.println(
+					"------------------------------------------------------------------------------------------------");
+			for (Campground campground : campgroundsInPark) {
+				Long campgroundId = campground.getCampgroundId();
+				String campgroundName = campground.getCampgroundName();
+				String formatOpenFrom = campground.getOpenFrom();
+				String openFrom = convertNumToMonth(formatOpenFrom);
+				String formatOpenTo = campground.getOpenTo();
+				String openTo = convertNumToMonth(formatOpenTo);
+				double dailyFee = campground.getDailyFee();
+				System.out.println(String.format("%-5s", "") + String.format("%-15s", campgroundId)
+						+ String.format("%-35s", campgroundName) + String.format("%-15s", openFrom)
+						+ String.format("%-17s", openTo) + "$" + dailyFee + "0");
+			}
 		String campgroundId = menu.getChoiceFromOptions("Which campground (enter 0 to cancel)?");
 		Long id = Long.parseLong(campgroundId);
 		if (id == 0) {
@@ -151,6 +171,7 @@ public class CampgroundCLI {
 		LocalDate toDate = convertStringToDate(departureDate);
 		validateDateRange(toDate, fromDate, parkName);
 		handleMakeReservation(id, fromDate, toDate);
+		} 
 	}
 
 	private void handleMakeReservation(Long id, LocalDate fromDate, LocalDate toDate) {
@@ -181,8 +202,8 @@ public class CampgroundCLI {
 			}
 			String name = menu.getChoiceFromOptions("What name should the reservation be made under?");
 			reservationDAO.createNewReservation(siteId, name, fromDate, toDate);
-			System.out.println("The reservation has been made and the Confirmation ID is { "
-					+ reservationDAO.confirmReservation(name) + " }");
+			System.out.println("The reservation has been made and the Confirmation ID is  "
+					+ reservationDAO.confirmReservation(name));
 			System.exit(0);
 		} else {
 			System.out.println("There are no available reservations.");
