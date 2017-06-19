@@ -14,15 +14,14 @@ import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 
-import com.techelevator.campground.model.Reservation;
 import com.techelevator.campground.model.jdbc.JDBCReservationDAO;
 
 public class JDBCReservationsDAOTest {
 	private static SingleConnectionDataSource dataSource;
 	private JDBCReservationDAO dao;
-	private LocalDate inputFromDate = LocalDate.parse("0440-10-10");
-	private LocalDate inputToDate = LocalDate.parse("2000-12-01");
-	private LocalDate setDate = LocalDate.parse("0440-08-01");
+	private LocalDate inputFromDate = LocalDate.parse("1740-10-10");
+	private LocalDate inputToDate = LocalDate.parse("1740-10-12");
+	private LocalDate setDate = LocalDate.parse("2017-01-01");
 	
 	@BeforeClass
 	public static void setupDataSource() {
@@ -42,7 +41,7 @@ public class JDBCReservationsDAOTest {
 	public void setup() {
 		String sqlInsertReservation = "INSERT INTO reservation(reservation_id, site_id, name, from_date, to_date, create_date) VALUES( ?, ?, ?, ?, ?, ? )";
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sqlInsertReservation, 45, 10, "Captain Morgan", inputFromDate, inputToDate, setDate);
+		jdbcTemplate.update(sqlInsertReservation, 54, 10, "Captain Morgan", inputFromDate, inputToDate, setDate);
 		dao = new JDBCReservationDAO(dataSource);
 	}
 	
@@ -53,11 +52,14 @@ public class JDBCReservationsDAOTest {
 	
 	@Test
 	public void create_and_return_new_reservation() {
-		String sqlInsertReservation = "SELECT reservation_id " + "FROM reservation " + "WHERE name = ? ";
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(sqlInsertReservation, "Captain Morgan");
-		Reservation results = dao.confirmReservation("Captain Morgan");
-		assertEquals(45, results); 
+		List<String> results = dao.confirmReservation("Captain Morgan");
+		assertEquals(1, results.size()); 
+	}
+	@Test
+	public void create_reserveration_and_call_it() {
+		dao.createNewReservation(24L, "George Washington", inputFromDate, inputToDate);
+		List<String> results = dao.confirmReservation("George Washington");
+		assertEquals(1, results.size());
 	}
 
 }

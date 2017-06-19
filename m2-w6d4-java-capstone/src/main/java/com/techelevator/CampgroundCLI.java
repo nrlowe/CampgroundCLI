@@ -32,10 +32,12 @@ public class CampgroundCLI {
 	private static final String MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN = "Return to previous screen";
 
 	private static final String PARK_INFO_VIEW_CAMPGROUNDS = "View Campgrounds";
-//	private static final String PARK_INFO_SEARCH_FOR_RESERVATION = "Search For Reservation";
-	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS, 
-																  MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
-//			PARK_INFO_SEARCH_FOR_RESERVATION, MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
+	// private static final String PARK_INFO_SEARCH_FOR_RESERVATION = "Search
+	// For Reservation";
+	private static final String[] PARK_INFO_MENU = new String[] { PARK_INFO_VIEW_CAMPGROUNDS,
+			MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN };
+	// PARK_INFO_SEARCH_FOR_RESERVATION, MENU_OPTION_RETURN_TO_PREVIOUS_SCREEN
+	// };
 
 	private static final String CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION = "Search for Available Reservation";
 	private static final String[] CAMPGROUND_INFO = new String[] { CAMPGROUND_INFO_SEARCH_FOR_AVAILABLE_RESERVATION,
@@ -105,8 +107,8 @@ public class CampgroundCLI {
 		String choice = (String) menu.getChoiceFromOptions(PARK_INFO_MENU);
 		if (choice.equals(PARK_INFO_VIEW_CAMPGROUNDS)) {
 			handleViewCampgrounds(selectedPark.getParkName());
-//		} else if (choice.equals(PARK_INFO_SEARCH_FOR_RESERVATION)) {
-//			handleSearchForReservation(selectedPark.getParkName());
+			// } else if (choice.equals(PARK_INFO_SEARCH_FOR_RESERVATION)) {
+			// handleSearchForReservation(selectedPark.getParkName());
 		}
 	}
 
@@ -160,18 +162,36 @@ public class CampgroundCLI {
 						+ String.format("%-35s", campgroundName) + String.format("%-15s", openFrom)
 						+ String.format("%-17s", openTo) + "$" + dailyFee + "0");
 			}
-		String campgroundId = menu.getChoiceFromOptions("Which campground (enter 0 to cancel)?");
-		Long id = Long.parseLong(campgroundId);
-		if (id == 0) {
-			handleViewCampgrounds(parkName);
+			String campgroundId = menu.getChoiceFromOptions("Which campground (enter 0 to cancel)?");
+			Long id = Long.parseLong(campgroundId);
+			Long obj1 = campgroundsInPark.get(0).getCampgroundId();
+			Long obj2 = campgroundsInPark.get(campgroundsInPark.size() - 1).getCampgroundId();
+			if (id == 0) {
+				handleViewCampgrounds(parkName);
+			} else if (id < obj1 || id > obj2) {
+				System.out.println();
+				System.out.println("Please select a valid option");
+				handleViewCampgrounds(parkName);
+			} else {
+				String arrivalDate = menu.getChoiceFromOptions("What is the arrival date? yyyy-mm-dd:");
+				// if date is not in correct format?
+				// or try loop?
+//					try {
+						LocalDate fromDate = convertStringToDate(arrivalDate);
+//					} catch (ParseException e) {
+//						System.out.println("Please enter in provided format");
+//					}
+					// formatter.setLenient(false);
+					String departureDate = menu.getChoiceFromOptions("What is the departure date? yyyy-mm-dd: ");
+//					try {
+						LocalDate toDate = convertStringToDate(departureDate);
+//					} catch (ParseException e) {
+//						System.out.println("Please enter in provided format");
+//					}
+					validateDateRange(toDate, fromDate, parkName);
+					handleMakeReservation(id, fromDate, toDate);
+			}
 		}
-		String arrivalDate = menu.getChoiceFromOptions("What is the arrival date? yyyy-mm-dd:");
-		LocalDate fromDate = convertStringToDate(arrivalDate);
-		String departureDate = menu.getChoiceFromOptions("What is the departure date? yyyy-mm-dd: ");
-		LocalDate toDate = convertStringToDate(departureDate);
-		validateDateRange(toDate, fromDate, parkName);
-		handleMakeReservation(id, fromDate, toDate);
-		} 
 	}
 
 	private void handleMakeReservation(Long id, LocalDate fromDate, LocalDate toDate) {
@@ -216,6 +236,7 @@ public class CampgroundCLI {
 	}
 
 	private int validateDateRange(LocalDate endDate, LocalDate startDate, String parkName) {
+		// What if they pick a month the campground isnt open??
 		int totalDays = endDate.compareTo(startDate);
 		if (totalDays < 0) {
 			System.out.println("Departure date must be AFTER arrival date!");

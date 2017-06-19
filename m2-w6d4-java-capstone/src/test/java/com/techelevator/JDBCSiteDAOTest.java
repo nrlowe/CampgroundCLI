@@ -21,9 +21,11 @@ import com.techelevator.campground.model.jdbc.JDBCSiteDAO;
 public class JDBCSiteDAOTest {
 	private static SingleConnectionDataSource dataSource;
 	private JDBCSiteDAO dao;
-	private LocalDate fromDate = LocalDate.parse("2017-06-09");
-	private LocalDate toDate = LocalDate.parse("2017-06-17");
-	
+	private LocalDate fromDate = LocalDate.parse("2017-06-01");
+	private LocalDate toDate = LocalDate.parse("2017-06-30");
+//	private LocalDate arrivalDate = LocalDate.parse("2017-07-09");
+//	private LocalDate departureDate = LocalDate.parse("2017-04-08");
+//	
 	@BeforeClass
 	public static void setupDataSource() {
 		dataSource = new SingleConnectionDataSource();
@@ -51,6 +53,9 @@ public class JDBCSiteDAOTest {
 	@Test 
 	public void return_current_reservations_by_site() {
 		List<Site> results = dao.getCurrentReservationsBySite(1L, fromDate, toDate);
-		assertEquals(2, results.size());
+		assertEquals(5, results.size());
  	}
+	
+	
+	
 }
